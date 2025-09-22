@@ -3205,6 +3205,7 @@ GameObject:
   - component: {fileID: 40133743}
   - component: {fileID: 40133742}
   - component: {fileID: 40133746}
+  - component: {fileID: 40133747}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -3360,8 +3361,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerVelocity: 5
+  _jumpForce: 2
   _sensorPosition: {fileID: 420582842}
   _sensorSize: {x: 0.5, y: 0.2}
+--- !u!95 &40133747
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 40133741}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5d3f15f8cf2a1b344b6e745ea25a04eb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &420582841
 GameObject:
   m_ObjectHideFlags: 0
@@ -3770,7 +3794,8 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 37.508575, y: 4.803341}
-      - {x: 3.4490068, y: 10.066431}
+      - {x: 23.46757, y: 15.257805}
+      - {x: 3.8337295, y: 15.58079}
       - {x: -21.386036, y: 7.464539}
       - {x: -23.182085, y: -10.320841}
       - {x: -1.9305277, y: -14.945933}

@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private Rigidbody2D _rigidBody2D;
+    private Animator _animator;
     //public GroundSensor groundSensor;
 
     private InputAction _moveAction;
@@ -13,7 +14,7 @@ public class PlayerController : MonoBehaviour
     private InputAction _jumpAction;
     private InputAction _attackAction;
     [SerializeField] private float _playerVelocity = 5;
-    private float _jumpForce = 4;
+    [SerializeField] private float _jumpForce = 4;
 
     [SerializeField] private Transform _sensorPosition;
     [SerializeField] private Vector2 _sensorSize = new Vector2(0.5f, 0.5f);
@@ -23,6 +24,8 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         _rigidBody2D = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+        
         _moveAction = InputSystem.actions["Move"];
         _jumpAction = InputSystem.actions["Jump"];
         //_attackAction = InputSystem.actions.FindAction("Attack");
@@ -48,6 +51,9 @@ public class PlayerController : MonoBehaviour
         {
             Jump();
         }
+
+        Movement();
+        
     }
 
     void FixedUpdate()
@@ -55,6 +61,24 @@ public class PlayerController : MonoBehaviour
 
         Move();
 
+    }
+
+    void Movement()
+    {
+        if (_moveInput.x < 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+            _animator.SetBool("IsRunning", true);
+        }
+        else if (_moveInput.x > 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+            _animator.SetBool("IsRunning", true);
+        }
+        else
+        {
+          _animator.SetBool("IsRunning", false);  
+        }
     }
 
     void Jump()
