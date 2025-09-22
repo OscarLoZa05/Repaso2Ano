@@ -13,11 +13,14 @@ public class PlayerController : MonoBehaviour
     private Vector2 _moveInput;
     private InputAction _jumpAction;
     private InputAction _attackAction;
+    private InputAction _interactAction;
     [SerializeField] private float _playerVelocity = 5;
     [SerializeField] private float _jumpForce = 4;
+    private bool _alreadyLanded = true;
 
     [SerializeField] private Transform _sensorPosition;
     [SerializeField] private Vector2 _sensorSize = new Vector2(0.5f, 0.5f);
+    [SerializeField] private Vector2 _interactionZone = new Vector2(1, 1);
 
 
 
@@ -25,12 +28,13 @@ public class PlayerController : MonoBehaviour
     {
         _rigidBody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-        
+
         _moveAction = InputSystem.actions["Move"];
         _jumpAction = InputSystem.actions["Jump"];
-        //_attackAction = InputSystem.actions.FindAction("Attack");
         _attackAction = InputSystem.actions["Attack"];
+        _interactAction = InputSystem.actions["Interact"];
         //groundSensor = GetComponentInChildren<GroundSensor>();
+        // //_attackAction = InputSystem.actions.FindAction("Attack");
     }
 
     void Start()
@@ -42,6 +46,11 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
+
+
+        //Tarea if(isAttaking) return;
+
+
         _moveInput = _moveAction.ReadValue<Vector2>();
         //Debug.Log(_moveInput);
 
@@ -52,8 +61,14 @@ public class PlayerController : MonoBehaviour
             Jump();
         }
 
+        if (_interactAction.WasPerformedThisFrame())
+        {
+            Interact();
+        }
+
         Movement();
-        
+
+        _animator.SetBool("IsJumping", !IsGrounded());
     }
 
     void FixedUpdate()
@@ -89,6 +104,19 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("Salto");
     }
 
+    void Interact()
+    {
+        //Debug.Log("haciendo cosas");
+        Collider2D[] interactables = Physics2D.OverlapBoxAll(transform.position, _interactionZone, 0);
+        foreach (Collider2D item in interactables)
+        {
+            if (item.gameObject.tag == "Star")
+            {
+                Debug.Log("otcando al Aaron estrelloso");
+            }
+        }
+    }
+
     void Move()
     {
         _rigidBody2D.linearVelocity = new Vector2(_moveInput.x * _playerVelocity, _rigidBody2D.linearVelocityY);
@@ -101,9 +129,11 @@ public class PlayerController : MonoBehaviour
         {
             if (item.gameObject.layer == 3)
             {
+
                 return true;
             }
         }
+
         return false;
     }
 
@@ -111,6 +141,8 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireCube(_sensorPosition.position, _sensorSize);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(transform.position, _interactionZone);
     }
 
 
