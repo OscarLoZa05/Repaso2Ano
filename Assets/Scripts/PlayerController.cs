@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -112,7 +113,11 @@ public class PlayerController : MonoBehaviour
         {
             if (item.gameObject.tag == "Star")
             {
-                Debug.Log("otcando al Aaron estrelloso");
+                Star starScript = item.gameObject.GetComponent<Star>();
+                if (starScript != null)
+                {
+                    starScript.Interection();
+                }
             }
         }
     }
