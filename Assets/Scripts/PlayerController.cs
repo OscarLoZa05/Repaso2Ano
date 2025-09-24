@@ -23,6 +23,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 _sensorSize = new Vector2(0.5f, 0.5f);
     [SerializeField] private Vector2 _interactionZone = new Vector2(1, 1);
 
+    [SerializeField] private int _life = 10;
+
+  
+
 
 
     void Awake()
@@ -93,7 +97,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-          _animator.SetBool("IsRunning", false);  
+            _animator.SetBool("IsRunning", false);
         }
     }
 
@@ -149,6 +153,27 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.blue;
         Gizmos.DrawWireCube(transform.position, _interactionZone);
     }
+
+    public void Damage(int damage)
+    {
+
+        Debug.Log("He recibido daño");
+        _life -= damage;
+        Dead();
+
+    }
+
+    void Dead()
+    {
+        if (_life <= 0)
+        {
+            Debug.Log("Estas Muerto");
+        }
+    }
+
+
+
+    
 
 
 
