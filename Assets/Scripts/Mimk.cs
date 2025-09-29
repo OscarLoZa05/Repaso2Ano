@@ -48,7 +48,7 @@ public class Mimk : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && cooldawnAttack >= timerAttack)
         {
             PlayerController _playerController = collision.gameObject.GetComponent<PlayerController>();
-            _playerController.Damage(mimikDamage);
+            _playerController.TakeDamage(mimikDamage);
             cooldawnAttack = 0;
         }
         

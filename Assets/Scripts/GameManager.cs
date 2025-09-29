@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     //Singelton /*Sirve para ser facil de acceder a cialqioer cosa, y evitar que haya duplicados de ese objeto*/ 
 
     public static GameManager instance { get; private set; } //Solo prodra cambiar le valor desde dentro del script para modificat el valor
+
+    public bool _isPaused = false;
     [SerializeField] private GameObject _pauseCanvas;
     [SerializeField] private InputActionAsset playerInputs;
     private InputAction _pauseInput;
@@ -44,12 +46,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Pause()
+    public void Pause()
     {
-        Time.timeScale = 0;
-        _pauseCanvas.SetActive(true);
-        playerInputs.FindActionMap("Player").Disable();
-        
+        if (_isPaused)
+        {
+            _isPaused = false;
+            Time.timeScale = 1;
+            _pauseCanvas.SetActive(false);
+            playerInputs.FindActionMap("Player").Enable();
+        }
+        else
+        {
+            _isPaused = true;
+            Time.timeScale = 0;
+            _pauseCanvas.SetActive(true);
+            playerInputs.FindActionMap("Player").Disable();
+        }
         
     }
 }

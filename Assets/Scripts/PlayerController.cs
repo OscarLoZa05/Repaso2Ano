@@ -4,8 +4,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
     private Rigidbody2D _rigidBody2D;
     private Animator _animator;
     //public GroundSensor groundSensor;
@@ -23,7 +21,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 _sensorSize = new Vector2(0.5f, 0.5f);
     [SerializeField] private Vector2 _interactionZone = new Vector2(1, 1);
 
-    [SerializeField] private int _life = 10;
+    [SerializeField] private int _currentHealth = 10;
+    [SerializeField] private int _maxHealth = 10;
+
+
 
   
 
@@ -44,7 +45,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-
+        _currentHealth = _maxHealth;
     }
 
     // Update is called once per frame
@@ -154,27 +155,19 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireCube(transform.position, _interactionZone);
     }
 
-    public void Damage(int damage)
+    public void TakeDamage(int damage)
     {
 
         Debug.Log("He recibido daño");
-        _life -= damage;
-        Dead();
-
-    }
-
-    void Dead()
-    {
-        if (_life <= 0)
+        _currentHealth -= damage;
+        if (_currentHealth <= 0)
         {
-            Debug.Log("Estas Muerto");
+            Death();
         }
     }
 
-
-
-    
-
-
-
+    void Death()
+    {
+        Debug.Log("Estas Muerto");
+    }
 }
