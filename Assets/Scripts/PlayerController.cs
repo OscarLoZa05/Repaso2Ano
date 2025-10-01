@@ -24,9 +24,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _currentHealth = 10;
     [SerializeField] private float _maxHealth = 10;
 
+    [SerializeField] private Transform _attackHitbox;
+    [SerializeField] private float _attackZone = 0.5f;
+
+    [SerializeField] private bool _isAttacking = false;
 
 
-  
+
+
 
 
 
@@ -53,19 +58,32 @@ public class PlayerController : MonoBehaviour
     {
 
 
+        if (_isAttacking == true)
+        {
+            return;
+        }
+
+
+
 
         //Tarea if(isAttaking) return;
 
 
-        _moveInput = _moveAction.ReadValue<Vector2>();
+            _moveInput = _moveAction.ReadValue<Vector2>();
         //Debug.Log(_moveInput);
 
         //transform.position = transform.position + new Vector3(_moveInput.x, 0, 0) * _playerVelocity * Time.deltaTime;
 
-        if (_jumpAction.WasPressedThisFrame() && IsGrounded())
+        if (_attackAction.WasPressedThisFrame() && _moveInput.x == 0 && IsGrounded())
         {
-            Jump();
+            _isAttacking = true;
+            _animator.SetTrigger("IsAttacking");
         }
+
+        if (_jumpAction.WasPressedThisFrame() && IsGrounded())
+            {
+                Jump();
+            }
 
         if (_interactAction.WasPerformedThisFrame())
         {
@@ -147,14 +165,6 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(_sensorPosition.position, _sensorSize);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position, _interactionZone);
-    }
-
     public void TakeDamage(int damage)
     {
         _currentHealth -= damage;
@@ -169,5 +179,36 @@ public class PlayerController : MonoBehaviour
     void Death()
     {
         Debug.Log("Estas Muerto");
+    }
+
+    public void NormalAttack()
+    {
+
+        Debug.Log("Estas atacando");
+        Collider2D[] enemy = Physics2D.OverlapCircleAll(_attackHitbox.position, _attackZone, 0);
+        foreach (Collider2D item in enemy)
+        {
+            if (item.gameObject.layer == 8)
+            {
+                Debug.Log("Estas atacando");
+            }
+        }
+    }
+
+    public void FinishAttack()
+    {
+        _isAttacking = false;
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(_sensorPosition.position, _sensorSize);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(transform.position, _interactionZone);
+
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(_attackHitbox.position, _attackZone);
     }
 }
