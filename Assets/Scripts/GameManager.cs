@@ -1,7 +1,6 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 public class GameManager : MonoBehaviour
 {
 
@@ -9,8 +8,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance { get; private set; } //Solo prodra cambiar le valor desde dentro del script para modificat el valor
 
-    public bool _isPaused = false;
-    [SerializeField] private GameObject _pauseCanvas;
+    private bool _isPaused = false;
     [SerializeField] private InputActionAsset playerInputs;
     private InputAction _pauseInput;
 
@@ -52,16 +50,18 @@ public class GameManager : MonoBehaviour
         {
             _isPaused = false;
             Time.timeScale = 1;
-            _pauseCanvas.SetActive(false);
+            GUIManager.Instance.ChangeCanvasStatus(GUIManager.Instance._pauseCanvas, false);
             playerInputs.FindActionMap("Player").Enable();
         }
         else
         {
             _isPaused = true;
             Time.timeScale = 0;
-            _pauseCanvas.SetActive(true);
+            GUIManager.Instance.ChangeCanvasStatus(GUIManager.Instance._pauseCanvas, true);
             playerInputs.FindActionMap("Player").Disable();
         }
-        
+
     }
+
+    
 }

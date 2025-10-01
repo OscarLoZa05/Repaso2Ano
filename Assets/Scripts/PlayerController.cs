@@ -157,9 +157,9 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-
-        Debug.Log("He recibido daño");
         _currentHealth -= damage;
+        GUIManager.Instance.UpdateHealthBar(_currentHealth, _maxHealth);
+
         if (_currentHealth <= 0)
         {
             Death();
