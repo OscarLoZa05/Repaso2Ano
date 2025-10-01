@@ -21,8 +21,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 _sensorSize = new Vector2(0.5f, 0.5f);
     [SerializeField] private Vector2 _interactionZone = new Vector2(1, 1);
 
-    [SerializeField] private int _currentHealth = 10;
-    [SerializeField] private int _maxHealth = 10;
+    [SerializeField] private float _currentHealth = 10;
+    [SerializeField] private float _maxHealth = 10;
 
 
 

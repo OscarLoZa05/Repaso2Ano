@@ -8,9 +8,9 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance { get; private set; } //Solo prodra cambiar le valor desde dentro del script para modificat el valor
 
-    private bool _isPaused = false;
-    [SerializeField] private InputActionAsset playerInputs;
-    private InputAction _pauseInput;
+    public bool _isPaused = false;
+    public InputActionAsset playerInputs;
+    private InputAction pauseInput;
 
     private int _stars = 0;
 
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        _pauseInput = InputSystem.actions["Pause"];
+        pauseInput = InputSystem.actions["Pause"];
     }
 
     public void AddStar()
@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (_pauseInput.WasPressedThisFrame())
+        if (pauseInput.WasPressedThisFrame())
         {
             Pause();
         }

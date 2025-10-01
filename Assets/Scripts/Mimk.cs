@@ -38,20 +38,22 @@ public class Mimk : MonoBehaviour
     {
         if (collision.gameObject.layer == 6)
         {
-            mimikDirection *= -1;
+           mimikDirection *= -1; 
         }
     }
 
-    void OnCollisionStay2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        
-        if (collision.gameObject.CompareTag("Player") && cooldawnAttack >= timerAttack)
+        if (collision.gameObject.CompareTag("Player"))
         {
-            PlayerController _playerController = collision.gameObject.GetComponent<PlayerController>();
-            _playerController.TakeDamage(mimikDamage);
-            cooldawnAttack = 0;
+            mimikDirection *= -1;
+            if (cooldawnAttack >= timerAttack)
+            {
+                PlayerController _playerController = collision.gameObject.GetComponent<PlayerController>();
+                _playerController.TakeDamage(mimikDamage);
+                cooldawnAttack = 0;
+            }
         }
-        
     }
 
     
