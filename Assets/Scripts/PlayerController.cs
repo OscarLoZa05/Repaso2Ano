@@ -79,13 +79,17 @@ public class PlayerController : MonoBehaviour
             _isAttacking = true;
             _animator.SetTrigger("IsAttacking");
         }
+        if(_attackAction.WasPressedThisFrame() && _moveInput.x != 0 && IsGrounded())
+        {          
+            _animator.SetTrigger("IsRunAttack");
+        }
 
         if (_jumpAction.WasPressedThisFrame() && IsGrounded())
             {
                 Jump();
             }
 
-        if (_interactAction.WasPerformedThisFrame())
+        if (_interactAction.WasPressedThisFrame())
         {
             Interact();
         }
@@ -134,12 +138,12 @@ public class PlayerController : MonoBehaviour
         Collider2D[] interactables = Physics2D.OverlapBoxAll(transform.position, _interactionZone, 0);
         foreach (Collider2D item in interactables)
         {
-            if (item.gameObject.tag == "Star")
+            if (item.gameObject.layer == 9)
             {
-                Star starScript = item.gameObject.GetComponent<Star>();
-                if (starScript != null)
+                IInteratable interactable = item.gameObject.GetComponent<IInteratable>();
+                if (interactable != null)
                 {
-                    starScript.Interection();
+                    interactable.Interact();
                 }
             }
         }
@@ -182,6 +186,20 @@ public class PlayerController : MonoBehaviour
     }
 
     public void NormalAttack()
+    {
+
+        Debug.Log("Estas atacando");
+        Collider2D[] enemy = Physics2D.OverlapCircleAll(_attackHitbox.position, _attackZone, 0);
+        foreach (Collider2D item in enemy)
+        {
+            if (item.gameObject.layer == 8)
+            {
+                Debug.Log("Estas atacando");
+            }
+        }
+    }
+
+    public void MovementAttack()
     {
 
         Debug.Log("Estas atacando");

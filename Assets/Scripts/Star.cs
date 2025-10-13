@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Star : MonoBehaviour
+public class Star : MonoBehaviour, IInteratable
 {
     //GameManager _gameManager;
 
@@ -11,10 +11,8 @@ public class Star : MonoBehaviour
         //_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
-    public void Interection()
+    public void Interact()
     {
-        //_gameManager.AddStar();
-
         GameManager.instance.AddStar();
         AudioManager.instance.ReproduceSound(_starSFX);
         Destroy(gameObject);
