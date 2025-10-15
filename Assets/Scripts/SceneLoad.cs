@@ -68,4 +68,9 @@ public class SceneLoad : MonoBehaviour
         GameManager.instance._isPaused = false;
 
     }
+
+    public void GameOver()
+    {
+        SceneManager.LoadScene(2);
+    }
 }

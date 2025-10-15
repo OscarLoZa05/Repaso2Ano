@@ -7,6 +7,8 @@ public class GUIManager : MonoBehaviour
     public static GUIManager Instance;
     public GameObject _pauseCanvas;
     public Image _healthBar;
+    public Text starCount;
+    public Text coinCount;
 
     void Awake()
     {
@@ -18,6 +20,7 @@ public class GUIManager : MonoBehaviour
         {
             Instance = this;
         }
+
     }
 
     public void ChangeCanvasStatus(GameObject canvas, bool status)
@@ -40,4 +43,16 @@ public class GUIManager : MonoBehaviour
     {
         SceneLoad.Instance.ChangeScene(sceneName);
     }
+
+    public void StarText()
+    {
+        starCount.text = ": " + GameManager.instance.stars.ToString();
+    }
+
+    public void CoinText()
+    {
+        coinCount.text = ": " + GameManager.instance.coin.ToString();
+    }
+
+
 }

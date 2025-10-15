@@ -218,6 +218,12 @@ public class PlayerController : MonoBehaviour
         _isAttacking = false;
     }
 
+    public void Heal(float heal)
+    {
+        _currentHealth += heal;
+        GUIManager.Instance.UpdateHealthBar(_currentHealth, _maxHealth);
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;

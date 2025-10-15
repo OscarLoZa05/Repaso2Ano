@@ -12,7 +12,10 @@ public class GameManager : MonoBehaviour
     public InputActionAsset playerInputs;
     private InputAction pauseInput;
 
-    private int _stars = 0;
+    public int stars;
+    public int maxStars;
+    public int coin = 0;
+    public int _starVictory = 0;
 
     void Awake()
     {
@@ -30,10 +33,22 @@ public class GameManager : MonoBehaviour
         pauseInput = InputSystem.actions["Pause"];
     }
 
+    void Start()
+    {
+        GameObject[] estrellas = GameObject.FindGameObjectsWithTag("Star");
+        maxStars = estrellas.Length;
+    }
+
     public void AddStar()
     {
-        _stars++;
-        Debug.Log("Estrella recogidas: " + _stars);
+        stars++;
+        Debug.Log("Estrella recogidas: " + stars);
+    }
+
+    public void AddCoin()
+    {
+        coin++;
+        Debug.Log("Moneda recogidas: " + coin);
     }
 
     void Update()
@@ -42,6 +57,8 @@ public class GameManager : MonoBehaviour
         {
             Pause();
         }
+
+        Victory();
     }
 
     public void Pause()
@@ -63,5 +80,13 @@ public class GameManager : MonoBehaviour
 
     }
 
-    
+    public void Victory()
+    {
+        if(stars == maxStars)
+        {
+        
+        }
+        
+    }
+   
 }
