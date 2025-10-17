@@ -5,7 +5,8 @@ using UnityEngine.UI;
 public class GUIManager : MonoBehaviour
 {
     public static GUIManager Instance;
-    public GameObject _pauseCanvas;
+    public GameObject pauseCanvas;
+    public GameObject victoryCanvas;
     public Image _healthBar;
     public Text starCount;
     public Text coinCount;
@@ -20,7 +21,6 @@ public class GUIManager : MonoBehaviour
         {
             Instance = this;
         }
-
     }
 
     public void ChangeCanvasStatus(GameObject canvas, bool status)
@@ -53,6 +53,4 @@ public class GUIManager : MonoBehaviour
     {
         coinCount.text = ": " + GameManager.instance.coin.ToString();
     }
-
-
 }

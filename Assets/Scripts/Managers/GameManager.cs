@@ -13,8 +13,9 @@ public class GameManager : MonoBehaviour
     private InputAction pauseInput;
 
     public int stars;
+    public int coin;
     public int maxStars;
-    public int coin = 0;
+    
     public int _starVictory = 0;
 
     void Awake()
@@ -58,7 +59,6 @@ public class GameManager : MonoBehaviour
             Pause();
         }
 
-        Victory();
     }
 
     public void Pause()
@@ -67,14 +67,14 @@ public class GameManager : MonoBehaviour
         {
             _isPaused = false;
             Time.timeScale = 1;
-            GUIManager.Instance.ChangeCanvasStatus(GUIManager.Instance._pauseCanvas, false);
+            GUIManager.Instance.ChangeCanvasStatus(GUIManager.Instance.pauseCanvas, false);
             playerInputs.FindActionMap("Player").Enable();
         }
         else
         {
             _isPaused = true;
             Time.timeScale = 0;
-            GUIManager.Instance.ChangeCanvasStatus(GUIManager.Instance._pauseCanvas, true);
+            GUIManager.Instance.ChangeCanvasStatus(GUIManager.Instance.pauseCanvas, true);
             playerInputs.FindActionMap("Player").Disable();
         }
 
@@ -84,7 +84,10 @@ public class GameManager : MonoBehaviour
     {
         if(stars == maxStars)
         {
-        
+            GUIManager.Instance.ChangeCanvasStatus(GUIManager.Instance.victoryCanvas, true);
+            playerInputs.FindActionMap("Player").Disable();
+            Time.timeScale = 0;
+            
         }
         
     }

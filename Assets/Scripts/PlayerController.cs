@@ -1,11 +1,17 @@
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D _rigidBody2D;
     private Animator _animator;
+    private AudioSource _audioSource;
+    public AudioClip jumpSFX;
+    public AudioClip attackSFX;
+    public AudioClip runAttackSFX;
+    public AudioClip damageSFX;
     //public GroundSensor groundSensor;
 
     private InputAction _moveAction;
@@ -29,6 +35,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private bool _isAttacking = false;
 
+    [SerializeField] private int normalAttackDamage = 2;
+    [SerializeField] private int runAttackDamage = 1;
+
 
 
 
@@ -39,6 +48,7 @@ public class PlayerController : MonoBehaviour
     {
         _rigidBody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
+        _audioSource = GetComponent<AudioSource>();
 
         _moveAction = InputSystem.actions["Move"];
         _jumpAction = InputSystem.actions["Jump"];
@@ -62,9 +72,6 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-
-        
-
 
 
 
@@ -130,6 +137,7 @@ public class PlayerController : MonoBehaviour
     {
 
         _rigidBody2D.AddForce(transform.up * Mathf.Sqrt(_jumpForce * -2 * Physics2D.gravity.y), ForceMode2D.Impulse);
+        _audioSource.PlayOneShot(jumpSFX);
 
         //Debug.Log("Salto");
     }
@@ -173,44 +181,55 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        _audioSource.PlayOneShot(damageSFX);
         _currentHealth -= damage;
         GUIManager.Instance.UpdateHealthBar(_currentHealth, _maxHealth);
 
         if (_currentHealth <= 0)
         {
-            Death();
+            StartCoroutine(Death());
         }
     }
 
-    void Death()
+    IEnumerator Death()
     {
-        Debug.Log("Estas Muerto");
+        _animator.SetTrigger("IsDead");
+        yield return new WaitForSeconds(2);
+        Destroy(gameObject);
     }
 
     public void NormalAttack()
     {
-
-        Debug.Log("Estas atacando");
-        Collider2D[] enemy = Physics2D.OverlapCircleAll(_attackHitbox.position, _attackZone, 0);
-        foreach (Collider2D item in enemy)
+        _audioSource.PlayOneShot(attackSFX);
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(_attackHitbox.position, _attackZone);
+        foreach (Collider2D enemy in enemies)
         {
-            if (item.gameObject.layer == 8)
+            if (enemy.gameObject.layer == 8)
             {
-                Debug.Log("Estas atacando");
+                IDamageable damageable = enemy.GetComponent<IDamageable>();
+                if (damageable != null)
+                {
+                    damageable.DamageEnemy(normalAttackDamage);
+                }
+
+                
             }
         }
     }
 
     public void MovementAttack()
     {
-
-        Debug.Log("Estas atacando");
-        Collider2D[] enemy = Physics2D.OverlapCircleAll(_attackHitbox.position, _attackZone, 0);
-        foreach (Collider2D item in enemy)
+        _audioSource.PlayOneShot(runAttackSFX);
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(_attackHitbox.position, _attackZone);
+        foreach (Collider2D enemy in enemies)
         {
-            if (item.gameObject.layer == 8)
+            if (enemy.gameObject.layer == 8)
             {
-                Debug.Log("Estas atacando");
+                IDamageable damageable = enemy.GetComponent<IDamageable>();
+                if (damageable != null)
+                {
+                    damageable.DamageEnemy(runAttackDamage);
+                }
             }
         }
     }
@@ -223,6 +242,10 @@ public class PlayerController : MonoBehaviour
     public void Heal(float heal)
     {
         _currentHealth += heal;
+        if(_currentHealth > _maxHealth)
+        {
+            _currentHealth = _maxHealth;
+        }
         GUIManager.Instance.UpdateHealthBar(_currentHealth, _maxHealth);
     }
 
