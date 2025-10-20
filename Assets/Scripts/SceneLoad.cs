@@ -28,6 +28,8 @@ public class SceneLoad : MonoBehaviour
 
     public void ChangeScene(string sceneName)
     {
+        GameManager.instance.stars = 0;
+        GameManager.instance.coin = 0;
         StartCoroutine(LoadNewScene(sceneName));
     }
 

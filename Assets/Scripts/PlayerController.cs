@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private int normalAttackDamage = 2;
     [SerializeField] private int runAttackDamage = 1;
+    public InputActionAsset playerInputs;
 
 
 
@@ -194,8 +195,10 @@ public class PlayerController : MonoBehaviour
     IEnumerator Death()
     {
         _animator.SetTrigger("IsDead");
+        playerInputs.FindActionMap("Player").Disable();
         yield return new WaitForSeconds(2);
         Destroy(gameObject);
+        SceneLoad.Instance.GameOver();
     }
 
     public void NormalAttack()

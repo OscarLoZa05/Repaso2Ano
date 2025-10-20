@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     public int coin;
     public int maxStars;
     
-    public int _starVictory = 0;
+    //public int _starVictory = 0;
 
     void Awake()
     {
@@ -87,9 +87,7 @@ public class GameManager : MonoBehaviour
             GUIManager.Instance.ChangeCanvasStatus(GUIManager.Instance.victoryCanvas, true);
             playerInputs.FindActionMap("Player").Disable();
             Time.timeScale = 0;
-            
-        }
-        
+        } 
     }
    
 }
