@@ -68,11 +68,31 @@ public class SceneLoad : MonoBehaviour
         _loadingCanvas.SetActive(false);
         GameManager.instance.playerInputs.FindActionMap("Player").Enable();
         GameManager.instance._isPaused = false;
+        IsInMenu();
 
     }
 
     public void GameOver()
     {
         SceneManager.LoadScene(2);
+    }
+
+    public void IsInMenu()
+    {
+        if (SceneManager.GetActiveScene().name == "Main Menu")
+        {
+            AudioManager.instance.StopBGM();
+            AudioManager.instance.ChangeBGM(AudioManager.instance.menuBGM);
+        }
+        if (SceneManager.GetActiveScene().name == "Nivel 1")
+        {
+            AudioManager.instance.StopBGM();
+            AudioManager.instance.ChangeBGM(AudioManager.instance.nivel1BGM);
+        }
+        if (SceneManager.GetActiveScene().name == "GameOver")
+        {
+            AudioManager.instance.StopBGM();
+            AudioManager.instance.ChangeBGM(AudioManager.instance.gameoverBGM);
+        }
     }
 }

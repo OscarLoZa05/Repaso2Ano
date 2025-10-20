@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
@@ -7,11 +6,14 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D _rigidBody2D;
     private Animator _animator;
+    private BoxCollider2D _boxCollider;
     private AudioSource _audioSource;
     public AudioClip jumpSFX;
     public AudioClip attackSFX;
     public AudioClip runAttackSFX;
     public AudioClip damageSFX;
+    public AudioClip deathSFX;
+
     //public GroundSensor groundSensor;
 
     private InputAction _moveAction;
@@ -50,6 +52,7 @@ public class PlayerController : MonoBehaviour
         _rigidBody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _audioSource = GetComponent<AudioSource>();
+        _boxCollider = GetComponent<BoxCollider2D>();
 
         _moveAction = InputSystem.actions["Move"];
         _jumpAction = InputSystem.actions["Jump"];
@@ -182,12 +185,17 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        _audioSource.PlayOneShot(damageSFX);
+        
         _currentHealth -= damage;
         GUIManager.Instance.UpdateHealthBar(_currentHealth, _maxHealth);
 
-        if (_currentHealth <= 0)
+        if (_currentHealth > 0)
         {
+            _audioSource.PlayOneShot(damageSFX);
+        }
+        else
+        {
+            _audioSource.PlayOneShot(deathSFX);
             StartCoroutine(Death());
         }
     }
@@ -262,5 +270,14 @@ public class PlayerController : MonoBehaviour
 
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(_attackHitbox.position, _attackZone);
+    }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if(collider.gameObject.CompareTag("DeathLine"))
+        {
+            Debug.Log("HolaPuto");
+            StartCoroutine(Death());
+        }
     }
 }

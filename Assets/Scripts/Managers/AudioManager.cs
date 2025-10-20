@@ -9,6 +9,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource _sfxSource;
 
     public AudioClip menuBGM;
+    public AudioClip nivel1BGM;
+    public AudioClip gameoverBGM;
 
     void Awake()
     {
@@ -20,6 +22,8 @@ public class AudioManager : MonoBehaviour
         {
             instance = this;
         }
+
+        DontDestroyOnLoad(gameObject);
     }
 
     void Update()
@@ -30,6 +34,15 @@ public class AudioManager : MonoBehaviour
     public void ReproduceSound(AudioClip clip)
     {
         _sfxSource.PlayOneShot(clip);
+    }
+
+    public void StopBGM()
+    {
+        _bmgSource.Stop();
+    }
+    public void PlayBGM()
+    {
+        _bmgSource.Play();
     }
 
     public void ChangeBGM(AudioClip bgmClip)

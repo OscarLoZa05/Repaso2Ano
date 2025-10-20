@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
     {
         if (_isPaused)
         {
+            AudioManager.instance.PlayBGM();
             _isPaused = false;
             Time.timeScale = 1;
             GUIManager.Instance.ChangeCanvasStatus(GUIManager.Instance.pauseCanvas, false);
@@ -72,6 +73,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            AudioManager.instance.StopBGM();
             _isPaused = true;
             Time.timeScale = 0;
             GUIManager.Instance.ChangeCanvasStatus(GUIManager.Instance.pauseCanvas, true);
