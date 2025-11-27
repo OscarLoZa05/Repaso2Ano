@@ -175,11 +175,9 @@ public class PlayerController : MonoBehaviour
         {
             if (item.gameObject.layer == 3)
             {
-
                 return true;
             }
         }
-
         return false;
     }
 
